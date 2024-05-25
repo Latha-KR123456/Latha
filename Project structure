@@ -1,0 +1,19 @@
+project structure
+
+css
+amazon-sales-analysis/
+├── data/
+│   ├── amazon_sales.csv
+│   └── README.md
+├── notebooks/
+│   ├── 01_data_preprocessing.ipynb
+│   ├── 02_data_analysis.ipynb
+│   ├── 03_visualizations.ipynb
+├── src/
+│   ├── __init__.py
+│   ├── data_preprocessing.py
+│   ├── data_analysis.py
+│   ├── visualizations.py
+├── requirements.txt
+├── README.md
+└── .gitignore
