@@ -1,0 +1,112 @@
+*data_analysis *
+ import pandas as pd
+
+def load_data(filepath):
+    return pd.read_csv(filepath)
+
+def clean_data(df):
+    # Example cleaning steps
+    df.dropna(inplace=True)
+    df['date'] = pd.to_datetime(df['date'])
+    return df
+
+def preprocess_data(df):
+    # Example preprocessing steps
+    df['month'] = df['date'].dt.month
+    df['year'] = df['date'].dt.year
+    return df
+*data_analysis. py*
+ def get_monthly_sales(df):
+    monthly_sales = df.groupby(['year', 'month']).sum()['sales']
+    return monthly_sales
+
+def get_top_products(df, n=10):
+    top_products = df.groupby('product').sum()['sales'].sort_values(ascending=False).head(n)
+    return top_products
+
+def get_customer_statistics(df):
+    customer_stats = df.groupby('customer_id').agg({'sales': ['sum', 'mean'], 'product': 'count'})
+    return customer_stats
+
+*visualization *
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def plot_monthly_sales(monthly_sales):
+    plt.figure(figsize=(12, 6))
+    sns.lineplot(data=monthly_sales)
+    plt.title('Monthly Sales Over Time')
+    plt.xlabel('Date')
+    plt.ylabel('Sales')
+    plt.show()
+
+def plot_top_products(top_products):
+    plt.figure(figsize=(12, 6))
+    sns.barplot(x=top_products.values, y=top_products.index)
+    plt.title('Top Selling Products')
+    plt.xlabel('Sales')
+    plt.ylabel('Product')
+    plt.show()
+
+def plot_customer_statistics(customer_stats):
+    plt.figure(figsize=(12, 6))
+    sns.histplot(customer_stats['sales']['sum'], bins=30)
+    plt.title('Customer Lifetime Value Distribution')
+    plt.xlabel('Total Sales')
+    plt.ylabel('Number of Customers')
+    plt.show()
+
+*01_data_preprocessing. ipynb*
+
+ import pandas as pd
+from src.data_preprocessing import load_data, clean_data, preprocess_data
+
+# Load the data
+df = load_data('../data/amazon_sales.csv')
+
+# Clean the data
+df = clean_data(df)
+
+# Preprocess the data
+df = preprocess_data(df)
+
+# Save the cleaned and preprocessed data
+df.to_csv('../data/cleaned_amazon_sales.csv', index=False) import pandas as pd
+from src.data_analysis import get_monthly_sales, get_top_products, get_customer_statistics
+
+# Load the cleaned data
+df = pd.read_csv('../data/cleaned_amazon_sales.csv')
+
+# Monthly sales analysis
+monthly_sales = get_monthly_sales(df)
+print(monthly_sales)
+
+# Top products analysis
+top_products = get_top_products(df)
+print(top_products)
+
+# Customer statistics
+customer_stats = get_customer_statistics(df)
+print(customer_stats)
+
+*02_data_analysis. ipnb*
+
+import pandas as pd
+from src.visualizations import plot_monthly_sales, plot_top_products, plot_customer_statistics
+from src.data_analysis import get_monthly_sales, get_top_products, get_customer_statistics
+
+# Load the cleaned data
+df = pd.read_csv('../data/cleaned_amazon_sales.csv')
+
+# Monthly sales visualization
+monthly_sales = get_monthly_sales(df)
+plot_monthly_sales(monthly_sales)
+
+# Top products visualization
+top_products = get_top_products(df)
+plot_top_products(top_products)
+
+# Customer statistics visualization
+customer_stats = get_customer_statistics(df)
+plot_customer_statistics(customer_stats)
